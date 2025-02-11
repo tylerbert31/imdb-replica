@@ -60,7 +60,7 @@ abstract class Controller {
    */
   protected async setCache(key: string, value: any) {
     this.memcache.set(key, value);
-    this.redis.set(key, value);
+    await this.redis.set(key, value);
   }
 
   /**

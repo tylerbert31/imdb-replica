@@ -1,23 +1,20 @@
 import MovieController from "@/app/controllers/moive_controller";
 import { NextRequest, NextResponse } from "next/server";
 
-export const POST = MovieController.apiSearch;
-
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
 
-  const query = searchParams.get("query") || "";
-  const page = searchParams.get("page") || 1;
+  const movie_id = searchParams.get("movie_id");
 
-  if (!query) {
+  if (!movie_id) {
     return NextResponse.json(
       {
-        message: "missing '?query=movie_name' parameter",
+        message: "missing '?movie_id=movie_id' parameter",
       },
       { status: 400 }
     );
   }
 
-  const data = await MovieController.searchMovie(query, Number(page));
+  const data = await MovieController.getMovieDetails(Number(movie_id));
   return NextResponse.json(data);
 }
