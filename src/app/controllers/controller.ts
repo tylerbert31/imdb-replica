@@ -5,6 +5,11 @@ import redis from "../lib/redis";
 import autoBind from "../lib/auto_bind";
 import axios from "axios";
 
+/**
+ * ### Abstract Controller
+ * ---
+ * Developed by [tylerbert31](https://github.com/tylerbert31)
+ */
 abstract class Controller {
   protected readonly className = this.constructor.name;
   protected readonly environment: string = process.env.ENVIRONMENT || "LOCAL";
@@ -91,6 +96,18 @@ abstract class Controller {
     }
     console.log(`[ ${this.environment} ][ ${this.className}] ==> ${message}`);
   };
+
+  /**
+   * Check if the request body has the required key
+   * @param body {any}
+   * @param key {string}
+   */
+  protected validateRequest(body: any, key: string = "query") {
+    if (!body || !body[key]) {
+      return false;
+    }
+    return true;
+  }
 }
 
 export default Controller;
