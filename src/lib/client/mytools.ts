@@ -126,3 +126,4 @@ class myTools {
 
 const MyTools = new myTools();
 export default MyTools;
+export { myTools };
