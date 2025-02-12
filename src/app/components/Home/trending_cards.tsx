@@ -3,9 +3,10 @@ import { motion } from "framer-motion";
 import { TrendMovie } from "@/app/lib/types/movie";
 import MyTools from "@/app/lib/client/mytools";
 import Link from "next/link";
+import { Star } from "lucide-react";
 
 const containerClass: string =
-  "bg-zinc-900 rounded-lg shadow-md overflow-hidden";
+  "flex flex-col justify-between bg-zinc-900 rounded-lg shadow-md overflow-hidden max-w-[250px]";
 
 export default function TrendingCards({
   idx,
@@ -51,12 +52,19 @@ export default function TrendingCards({
             className="w-full h-64 object-cover z-10"
           />
         </div>
-        <div className="p-4 !z-50">
-          <h3 className="text-base md:text-lg font-bold mb-2 text-white line-clamp-2 text-ellipsis">
+        <div className="px-4 pt-4">
+          <h3 className="text-base md:text-lg font-bold mb-2 text-zinc-100 line-clamp-2 text-ellipsis">
             {movie.title}
           </h3>
         </div>
       </Link>
+      <div className="bg-zinc-900 p-4 flex justify-between items-center">
+        <div className="flex items-center">
+          <Star className="w-5 h-5 text-yellow-400" />
+          <span className="text-white text-sm ml-1">{movie.vote_average}</span>
+        </div>
+        <span className="text-zinc-500 text-sm">{movie.release_date}</span>
+      </div>
     </motion.div>
   );
 }

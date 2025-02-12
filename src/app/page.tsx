@@ -36,7 +36,7 @@ export default function Home() {
     <>
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto text-center mb-14">
-          <h1 className="text-4xl font-bold mb-8">
+          <h1 className="text-4xl font-bold mb-8 text-zinc-50">
             Find Your Next Favorite Movie
           </h1>
           <form onSubmit={handleSearch} className="flex gap-2">
@@ -69,7 +69,7 @@ export default function Home() {
                   duration: 0.5,
                 },
               }}
-              className="text-2xl font-bold mb-6"
+              className="text-2xl font-bold mb-6 text-zinc-50"
             >
               Top 20 Trending Movies
             </motion.h2>
