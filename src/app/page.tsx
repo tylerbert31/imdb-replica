@@ -2,11 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import TrendingCards, {
-  TrendingCardsLoading,
-} from "./components/Home/trending_cards";
-import { getTrending } from "./lib/client/server-actions";
-import { TrendingMovies } from "./lib/types/movie";
+import MovieCard, { MovieCardLoading } from "./components/Home/movie_card";
+import { getTrending } from "../lib/client/server-actions";
+import { TrendingMovies } from "../lib/types/movie";
 import { Search } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -78,12 +76,12 @@ export default function Home() {
             {/* Placeholder for trending movies */}
             {!trending ? (
               Array.from({ length: 20 }).map((_, index) => (
-                <TrendingCardsLoading key={index} />
+                <MovieCardLoading key={index} />
               ))
             ) : (
               <>
                 {trending.results.map((movie, index) => (
-                  <TrendingCards key={movie.id} idx={index} movie={movie} />
+                  <MovieCard key={movie.id} idx={index} movie={movie} />
                 ))}
               </>
             )}

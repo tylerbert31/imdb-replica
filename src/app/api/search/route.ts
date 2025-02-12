@@ -1,4 +1,4 @@
-import MovieController from "@/app/controllers/movie_controller";
+import MovieController from "@/controllers/movie_controller";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = MovieController.apiSearch;
