@@ -5,6 +5,7 @@ import {
   MovieDetails,
   TrendMovie,
   TrendTV,
+  TrendingMovies,
 } from "../lib/types/movie";
 
 class movieController extends Controller {
@@ -127,30 +128,25 @@ class movieController extends Controller {
   }
 
   /**
-   * Get Trending (Movie | TV Show) (Today | This Week)
-   * @param type {string} `'movie' | 'tv'`
-   * @param page {number}
-   * @param span {string} `'day' | 'week'`
-   * @returns {Promise<TrendMovie | TrendTV>}
+   * Get Trending Movies (Today | This Week)
+   * ---
+   * @returns {Promise<TrendingMovies>}
    */
   public async getTrending(
-    type: "movie" | "tv" = "movie",
     page = 1,
     span: "day" | "week" = "day"
-  ) {
-    const url = `https://api.themoviedb.org/3/trending/${type}/${span}?page=${page}`;
+  ): Promise<TrendingMovies> {
+    const url = `https://api.themoviedb.org/3/trending/movie/${span}?page=${page}`;
     const today = new Date().toISOString().split("T")[0];
 
-    const cacheKey = `trending_${type}_${span}_${page}_${today}`;
+    const cacheKey = `trending_movie_${span}_${page}_${today}`;
     const cacheData = await this.getCache(cacheKey);
 
-    type Trend = typeof type extends "movie" ? TrendMovie : TrendTV;
-
     if (cacheData) {
-      return cacheData as Trend;
+      return cacheData as TrendingMovies;
     }
 
-    const data: Trend = await this.get(url, {
+    const data: TrendingMovies = await this.get(url, {
       headers: {
         Authorization: `Bearer ${this.tmdbReadKey}`,
         Accept: "application/json",

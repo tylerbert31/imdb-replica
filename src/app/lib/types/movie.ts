@@ -147,4 +147,9 @@ export interface TrendTV extends MediaBase {
   origin_country: string[];
 }
 
-export interface TrendingMovie {}
+export interface TrendingMovies {
+  page: number;
+  results: TrendMovie[];
+  total_pages: number;
+  total_results: number;
+}

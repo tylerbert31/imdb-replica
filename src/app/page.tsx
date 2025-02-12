@@ -1,14 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import TrendingCards from "./components/Home/trending_cards";
+import TrendingCards, {
+  TrendingCardsLoading,
+} from "./components/Home/trending_cards";
+import { getTrending } from "./lib/client/server-actions";
+import { TrendingMovies } from "./lib/types/movie";
+import { Search } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function Home() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
+
+  const [trending, setTrending] = useState<TrendingMovies | null>(null);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,11 +23,19 @@ export default function Home() {
     }
   };
 
+  const fetchTrending = async () => {
+    const movies = await getTrending();
+    setTrending(movies);
+  };
+
+  useEffect(() => {
+    fetchTrending();
+  }, []);
+
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
+    <>
       <main className="flex-grow container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto text-center mb-12">
+        <div className="max-w-4xl mx-auto text-center mb-14">
           <h1 className="text-4xl font-bold mb-8">
             Find Your Next Favorite Movie
           </h1>
@@ -31,28 +45,51 @@ export default function Home() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search for movies..."
-              className="flex-grow p-4 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500"
+              className="flex-grow text-black px-4 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500"
             />
             <button
               type="submit"
-              className="px-8 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center"
             >
-              Search
+              <Search className="w-5 h-5" />
             </button>
           </form>
         </div>
 
         <section className="mb-12">
-          <h2 className="text-2xl font-bold mb-6">Trending Movies</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {!trending ? (
+            <div className=" h-4 bg-gray-700 w-56 animate-pulse p-4 my-5 rounded-lg" />
+          ) : (
+            <motion.h2
+              initial={{ opacity: 0, x: -20 }}
+              animate={{
+                opacity: 1,
+                x: 0,
+                transition: {
+                  duration: 0.5,
+                },
+              }}
+              className="text-2xl font-bold mb-6"
+            >
+              Top 20 Trending Movies
+            </motion.h2>
+          )}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
             {/* Placeholder for trending movies */}
-            {Array.from({ length: 20 }).map((_, index) => (
-              <TrendingCards idx={index} key={index} />
-            ))}
+            {!trending ? (
+              Array.from({ length: 20 }).map((_, index) => (
+                <TrendingCardsLoading key={index} />
+              ))
+            ) : (
+              <>
+                {trending.results.map((movie, index) => (
+                  <TrendingCards key={movie.id} idx={index} movie={movie} />
+                ))}
+              </>
+            )}
           </div>
         </section>
       </main>
-      <Footer />
-    </div>
+    </>
   );
 }
