@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { FilmIcon, Search } from "lucide-react";
+import { FilmIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { bebasNeue } from "@/lib/fonts";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -15,7 +16,7 @@ export default function Navbar() {
           </button>
           <Link
             href="/"
-            className="text-[#F5C518] text-3xl font-bold tracking-wider"
+            className={`text-[#F5C518] text-3xl font-bold tracking-wider ${bebasNeue.className}`}
           >
             TmDB
           </Link>

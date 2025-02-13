@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Github } from "lucide-react";
+import { bebasNeue } from "@/lib/fonts";
 
 export default function Footer() {
   return (
@@ -9,7 +10,11 @@ export default function Footer() {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 className="text-[#F5C518] text-xl font-bold mb-4">TmDB</h3>
+            <h3
+              className={`text-[#F5C518] text-xl font-bold mb-4 ${bebasNeue.className}`}
+            >
+              TmDB
+            </h3>
             <p className="text-gray-300">Your ultimate movie database</p>
           </div>
           <div>
