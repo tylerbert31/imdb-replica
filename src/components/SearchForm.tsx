@@ -1,10 +1,11 @@
-import React, { useTransition } from "react";
+import React, { Suspense, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2, Search } from "lucide-react";
 import { useState } from "react";
 import { Button } from "./ui/button";
+import { motion } from "framer-motion";
 
-export default function SearchForm() {
+function SearchComponent() {
   const router = useRouter();
   const params = useSearchParams();
 
@@ -23,10 +24,31 @@ export default function SearchForm() {
   };
   return (
     <div className="max-w-4xl mx-auto text-center mb-14">
-      <h1 className="text-4xl font-bold mb-8 text-zinc-50">
+      <motion.h1
+        initial={{
+          y: -10,
+          opacity: 0,
+        }}
+        animate={{
+          y: 0,
+          opacity: 1,
+        }}
+        className="text-4xl font-bold mb-8 text-zinc-50"
+      >
         Find Your Next Favorite Movie
-      </h1>
-      <form onSubmit={handleSearch} className="flex gap-2">
+      </motion.h1>
+      <motion.form
+        initial={{
+          y: 10,
+          opacity: 0,
+        }}
+        animate={{
+          y: 0,
+          opacity: 1,
+        }}
+        onSubmit={handleSearch}
+        className="flex gap-2"
+      >
         <input
           type="text"
           value={searchQuery}
@@ -49,7 +71,16 @@ export default function SearchForm() {
             </>
           )}
         </Button>
-      </form>
+      </motion.form>
     </div>
+  );
+}
+
+export default function SearchForm() {
+  return (
+    <Suspense fallback={<div className=" md:min-h-[112px] min-w-20" />}>
+      <SearchComponent />
+      {/* <div className=" md:min-h-[112px] min-w-20" /> */}
+    </Suspense>
   );
 }
