@@ -48,7 +48,7 @@ export default function MovieCard({ movie }: { movie: TrendMovie }) {
               className="w-full h-full object-cover"
             />
           </div>
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-zinc-900 to-transparent p-4">
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-zinc-900 via-zinc-900/70 to-transparent p-4">
             <h3 className="text-sm sm:text-base md:text-lg font-bold text-zinc-100 line-clamp-2 text-ellipsis">
               {movie.title}
             </h3>
@@ -62,7 +62,7 @@ export default function MovieCard({ movie }: { movie: TrendMovie }) {
                 </span>
               </div>
               {movie.release_date && (
-                <span className="text-zinc-500 text-xs sm:text-sm">
+                <span className="text-zinc-400 text-xs sm:text-sm">
                   {format(new Date(movie.release_date), "y")}
                 </span>
               )}
@@ -78,12 +78,7 @@ export function MovieCardLoading() {
   return (
     <motion.div
       initial={{
-        opacity: 0,
         scale: 0.8,
-      }}
-      whileInView={{
-        opacity: 1,
-        scale: 1,
       }}
       className={containerClass}
     >
