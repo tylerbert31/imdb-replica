@@ -8,6 +8,7 @@ import MovieCard, { MovieCardLoading } from "../_components/Home/movie_card";
 import SearchForm from "@/components/SearchForm";
 import InfiniteScroll from "@/components/ui/InfiniteScroll";
 import { Loader2 } from "lucide-react";
+import { useSearchMovie } from "@/lib/client/hooks";
 
 function SearchContent() {
   const params = useSearchParams();
@@ -25,7 +26,7 @@ function SearchContent() {
   }
 
   const getSearchResults = async () => {
-    const res = await searchMovie(movie, page);
+    const res = await useSearchMovie(movie, page);
     if (res && res.results.length) {
       setResults(res.results);
       setTotalResults(res.total_results);
