@@ -72,11 +72,7 @@ function SearchContent() {
           <>
             {results &&
               results.map((movie, index) => (
-                <MovieCard
-                  key={`${movie.id}_${index}`}
-                  idx={index}
-                  movie={movie}
-                />
+                <MovieCard key={`${movie.id}_${index}`} movie={movie} />
               ))}
           </>
         )}

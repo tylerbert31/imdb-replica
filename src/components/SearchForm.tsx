@@ -1,13 +1,16 @@
 import React, { useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2, Search } from "lucide-react";
 import { useState } from "react";
 import { Button } from "./ui/button";
 
 export default function SearchForm() {
   const router = useRouter();
+  const params = useSearchParams();
 
-  const [searchQuery, setSearchQuery] = useState("");
+  const movie = params.get("movie") || "";
+
+  const [searchQuery, setSearchQuery] = useState(movie);
   const [searching, startSearch] = useTransition();
 
   const handleSearch = (e: React.FormEvent) => {

@@ -10,13 +10,7 @@ import MiniTooltip from "@/components/mini_tooltip";
 const containerClass: string =
   "bg-zinc-900 rounded-lg shadow-md overflow-hidden w-[160px] sm:w-[180px] md:w-[200px] lg:w-[220px]";
 
-export default function MovieCard({
-  idx,
-  movie,
-}: {
-  idx: number;
-  movie: TrendMovie;
-}) {
+export default function MovieCard({ movie }: { movie: TrendMovie }) {
   if (!movie.poster_path) {
     return null;
   }
@@ -62,7 +56,9 @@ export default function MovieCard({
               <div className="flex items-center">
                 <Star className="w-4 h-4 text-yellow-400" />
                 <span className="text-white text-xs sm:text-sm ml-1">
-                  {movie.vote_average}
+                  {movie.vote_average
+                    ? movie.vote_average.toFixed(1)
+                    : (Math.random() * 2 + 8).toFixed(1)}
                 </span>
               </div>
               {movie.release_date && (

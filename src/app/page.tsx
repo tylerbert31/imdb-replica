@@ -41,7 +41,7 @@ export default function Home() {
               }}
               className="text-2xl font-bold mb-6 text-zinc-50"
             >
-              Top 20 Trending Movies
+              Top 20 Trending Movies - Today
             </motion.h2>
           )}
           {/* TRENDING CARDS */}
@@ -53,8 +53,8 @@ export default function Home() {
               ))
             ) : (
               <>
-                {trending.results.map((movie, index) => (
-                  <MovieCard key={movie.id} idx={index} movie={movie} />
+                {trending.results.map((movie) => (
+                  <MovieCard key={movie.id} movie={movie} />
                 ))}
               </>
             )}
