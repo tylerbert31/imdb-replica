@@ -4,19 +4,24 @@ import React, { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Star, Clock, Calendar, PlayCircle } from "lucide-react";
+import { Star, Clock, Calendar } from "lucide-react";
 import { useParams } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useMovieDetails } from "@/lib/client/hooks";
 import {
+  CastMember,
+  CrewMember,
   MovieDetails as MovieDetailsType,
   VideoResult,
 } from "@/lib/types/movie";
 import MyTools from "@/lib/client/mytools";
 import { bebasNeue, robotoCondensed } from "@/lib/fonts";
 import MiniTooltip from "@/components/mini_tooltip";
+import RelatedMovies from "@/app/_components/Home/Details/RelatedMovies";
+import { Separator } from "@/components/ui/separator";
+import { motion } from "framer-motion";
 
 export default function MovieDetails() {
   const { id } = useParams();
@@ -50,10 +55,6 @@ export default function MovieDetails() {
     return <MovieDetailsLoading />;
   }
 
-  const director = movieDetails?.credits?.crew.find(
-    (person) => person.job === "Director"
-  );
-
   // Get random trailer or teaser
   let videoTrailers = movieDetails?.videos?.results?.filter(
     (video) => video.type === "Trailer" || video.type === "Teaser"
@@ -64,7 +65,7 @@ export default function MovieDetails() {
   );
 
   return (
-    <main className={`mb-10 ${robotoCondensed.variable}`}>
+    <main className={`mb-10 ${robotoCondensed.variable} min-w-fit`}>
       {/* Hero Section with Backdrop */}
       <div className="relative">
         {/* Backdrop */}
@@ -97,25 +98,40 @@ export default function MovieDetails() {
               <Card className="border-zinc-800 bg-zinc-900/50 w-full max-w-[300px]">
                 <CardContent className="p-4 space-y-3">
                   <div className="flex items-center gap-2">
-                    <Star className="text-yellow-500" />
+                    <MiniTooltip text="Vote Average">
+                      <Star className="text-yellow-500" />
+                    </MiniTooltip>
                     <span className="text-zinc-100 font-roboto-condensed">
                       {movieDetails?.vote_average}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Clock className="text-zinc-400" />
+                    <MiniTooltip text="Runtime">
+                      <Clock className="text-zinc-400" />
+                    </MiniTooltip>
                     <span className="text-zinc-100">
                       {movieDetails?.runtime} minutes
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Calendar className="text-zinc-400" />
+                    <MiniTooltip text="Release Date">
+                      <Calendar className="text-zinc-400" />
+                    </MiniTooltip>
                     <span className="text-zinc-100">
                       {movieDetails?.release_date}
                     </span>
                   </div>
                 </CardContent>
               </Card>
+
+              <div className="my-4 hidden sm:block">
+                <CastAndDirector
+                  cast={movieDetails?.credits?.cast || []}
+                  director={movieDetails?.credits?.crew.find(
+                    (person) => person.job === "Director"
+                  )}
+                />
+              </div>
             </div>
 
             {/* Right Column - Details */}
@@ -162,85 +178,98 @@ export default function MovieDetails() {
               {/* Trailer Section */}
               {trailer && <Trailer trailer={trailer} />}
 
-              {/* Cast Section */}
-              {movieDetails?.credits?.cast && (
-                <div>
-                  <h2
-                    className={`text-lg font-semibold text-zinc-50 mb-4 ${bebasNeue.className} tracking-wide`}
-                  >
-                    Top Cast
-                  </h2>
-                  <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {movieDetails?.credits?.cast.slice(0, 6).map((person) => (
-                      <div
-                        key={person.name}
-                        className="flex items-center gap-3"
-                      >
-                        <MiniTooltip key={person.name} text={person.name}>
-                          <Avatar className="h-10 w-10 border-2 border-zinc-800 ring-1 ring-zinc-700">
-                            <AvatarImage
-                              src={MyTools.getPosterUrl(
-                                person.profile_path || ""
-                              )}
-                              alt={person.name}
-                              className="object-cover"
-                            />
-                            <AvatarFallback className="bg-zinc-800 text-zinc-300">
-                              {person.name[0]}
-                            </AvatarFallback>
-                          </Avatar>
-                        </MiniTooltip>
-                        <div>
-                          <p className="text-zinc-50 font-medium text-sm">
-                            {person.name}
-                          </p>
-                          <p className="text-zinc-400 text-xs">
-                            {person.character}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Director Section */}
-              {director && (
-                <div>
-                  <h2
-                    className={`text-lg font-semibold text-zinc-50 mb-4 ${bebasNeue.className} tracking-wide`}
-                  >
-                    Director
-                  </h2>
-                  <div className="flex items-center gap-3">
-                    <MiniTooltip text={director.name}>
-                      <Avatar className="h-10 w-10 border-2 border-zinc-800 ring-1 ring-zinc-700">
-                        <AvatarImage
-                          src={MyTools.getPosterUrl(
-                            director.profile_path || ""
-                          )}
-                          alt={director.name}
-                          className="object-cover"
-                        />
-                        <AvatarFallback className="bg-zinc-800 text-zinc-300">
-                          {director.name[0]}
-                        </AvatarFallback>
-                      </Avatar>
-                    </MiniTooltip>
-                    <div>
-                      <p className="text-zinc-50 font-medium text-sm">
-                        {director.name}
-                      </p>
-                      <p className="text-zinc-400 text-xs">{director.job}</p>
-                    </div>
-                  </div>
-                </div>
-              )}
+              {/* Cast and Director Section */}
+              <div className="block sm:hidden">
+                <CastAndDirector
+                  cast={movieDetails?.credits?.cast || []}
+                  director={movieDetails?.credits?.crew.find(
+                    (person) => person.job === "Director"
+                  )}
+                />
+              </div>
             </div>
           </div>
         </div>
+
+        <Separator className="my-10 opacity-5" />
+
+        {/* Related Movies */}
+        {movieDetails?.id && <RelatedMovies movieId={movieDetails.id} />}
       </div>
     </main>
+  );
+}
+
+function CastAndDirector({
+  cast,
+  director,
+}: {
+  cast: CastMember[];
+  director?: CrewMember;
+}) {
+  return (
+    <>
+      <div className="my-4">
+        <h2
+          className={`text-lg font-semibold text-zinc-50 mb-4 ${bebasNeue.className} tracking-wide`}
+        >
+          Top Cast
+        </h2>
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {cast.slice(0, 6).map((person) => (
+            <div key={person.name} className="flex items-center gap-3">
+              <MiniTooltip key={person.name} text={person.name}>
+                <Avatar className="h-10 w-10 hover:scale-110 cursor-pointer transition-all border-2 border-zinc-800 ring-1 ring-zinc-700">
+                  <AvatarImage
+                    src={MyTools.getPosterUrl(person.profile_path || "", "w92")}
+                    alt={person.name}
+                    className="object-cover"
+                  />
+                  <AvatarFallback className="bg-zinc-800 text-zinc-300">
+                    {person.name[0]}
+                  </AvatarFallback>
+                </Avatar>
+              </MiniTooltip>
+              <div className="block sm:hidden">
+                <p className="text-zinc-50 font-medium text-sm line-clamp-2">
+                  {person.name}
+                </p>
+                <p className="text-zinc-400 text-xs">{person.character}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      {director && (
+        <div>
+          <h2
+            className={`text-lg font-semibold text-zinc-50 mb-4 ${bebasNeue.className} tracking-wide`}
+          >
+            Director
+          </h2>
+          <div className="flex items-center gap-3">
+            <MiniTooltip text={director.name}>
+              <Avatar className="h-10 w-10 border-2 hover:scale-110 cursor-pointer transition-all  border-zinc-800 ring-1 ring-zinc-700">
+                <AvatarImage
+                  src={MyTools.getPosterUrl(director.profile_path || "", "w92")}
+                  alt={director.name}
+                  className="object-cover"
+                />
+                <AvatarFallback className="bg-zinc-800 text-zinc-300">
+                  {director.name[0]}
+                </AvatarFallback>
+              </Avatar>
+            </MiniTooltip>
+            <div>
+              <p className="text-zinc-50 font-medium text-sm">
+                {director.name}
+              </p>
+              <p className="text-zinc-400 text-xs">{director.job}</p>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

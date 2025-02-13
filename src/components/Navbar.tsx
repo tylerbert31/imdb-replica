@@ -1,12 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { FilmIcon } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { FilmIcon, TrendingUp } from "lucide-react";
 import { bebasNeue } from "@/lib/fonts";
 
 export default function Navbar() {
-  const pathname = usePathname();
   return (
     <nav className="bg-[#121212] p-4 shadow-md">
       <div className="container mx-auto flex items-center justify-between">
@@ -25,8 +23,9 @@ export default function Navbar() {
         <div className="flex items-center gap-0 md:gap-6">
           <Link
             href="/trending"
-            className="text-white hover:text-[#F5C518] transition-colors font-semibold"
+            className="text-white hover:text-[#F5C518] transition-colors font-semibold flex items-center gap-2"
           >
+            <TrendingUp size={20} />
             Trending
           </Link>
         </div>
