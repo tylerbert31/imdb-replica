@@ -22,14 +22,6 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-0 md:gap-6">
-          {pathname !== "/" && (
-            <Link
-              href="/"
-              className="flex-1 max-w-2xl mx-4 hover:scale-105 transition-all"
-            >
-              <Search className=" text-gray-100" size={20} />
-            </Link>
-          )}
           <Link
             href="/trending"
             className="text-white hover:text-[#F5C518] transition-colors font-semibold"

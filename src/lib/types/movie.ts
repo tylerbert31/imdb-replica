@@ -120,7 +120,7 @@ interface MediaBase {
   id: number;
   overview: string;
   poster_path: string;
-  media_type: "movie" | "tv";
+  media_type?: "movie" | "tv";
   adult: boolean;
   original_language: string;
   genre_ids: number[];
@@ -131,7 +131,7 @@ interface MediaBase {
 
 // Movie specific interface
 export interface TrendMovie extends MediaBase {
-  media_type: "movie";
+  media_type?: "movie";
   title: string;
   original_title: string;
   release_date: string;
@@ -140,7 +140,7 @@ export interface TrendMovie extends MediaBase {
 
 // TV Show specific interface
 export interface TrendTV extends MediaBase {
-  media_type: "tv";
+  media_type?: "tv";
   name: string;
   original_name: string;
   first_air_date: string;

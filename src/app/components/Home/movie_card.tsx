@@ -8,7 +8,7 @@ import { format } from "date-fns";
 import MiniTooltip from "@/components/mini_tooltip";
 
 const containerClass: string =
-  "bg-zinc-900 rounded-lg shadow-md overflow-hidden max-w-[250px]";
+  "bg-zinc-900 rounded-lg shadow-md overflow-hidden w-[160px] sm:w-[180px] md:w-[200px] lg:w-[220px]";
 
 export default function MovieCard({
   idx,
@@ -17,6 +17,9 @@ export default function MovieCard({
   idx: number;
   movie: TrendMovie;
 }) {
+  if (!movie.poster_path) {
+    return null;
+  }
   return (
     <MiniTooltip text={movie.title}>
       <motion.div
@@ -30,13 +33,8 @@ export default function MovieCard({
         }}
         whileHover={{
           scale: 1.05,
-          transition: {
-            delay: 0, // Exclude delay on hover
-            bounce: 0.1,
-          },
         }}
         transition={{
-          delay: idx * 0.05,
           bounceDamping: 0.5,
         }}
         viewport={{ once: true, amount: 0.2 }}
@@ -44,33 +42,35 @@ export default function MovieCard({
       >
         <Link
           href={`/movie/${movie.id}`}
-          className="grid grid-rows-[2fr_0.6fr_52px]"
+          className="block aspect-[2/3] relative"
         >
-          <div className=" overflow-hidden">
+          <div className="relative w-full h-full overflow-hidden">
             <motion.img
               whileHover={{
                 scale: 1.1,
               }}
               src={MyTools.getPosterUrl(movie.poster_path)}
               alt={movie.title}
-              className="w-full h-64 object-cover z-10"
+              className="w-full h-full object-cover"
             />
           </div>
-          <div className="px-4 pt-4">
-            <h3 className="text-base md:text-lg font-bold mb-2 text-zinc-100 line-clamp-2 text-ellipsis">
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-zinc-900 to-transparent p-4">
+            <h3 className="text-sm sm:text-base md:text-lg font-bold text-zinc-100 line-clamp-2 text-ellipsis">
               {movie.title}
             </h3>
-          </div>
-          <div className="bg-zinc-900 p-4 flex justify-between items-center">
-            <div className="flex items-center">
-              <Star className="w-5 h-5 text-yellow-400" />
-              <span className="text-white text-sm ml-1">
-                {movie.vote_average}
-              </span>
+            <div className="flex justify-between items-center mt-2">
+              <div className="flex items-center">
+                <Star className="w-4 h-4 text-yellow-400" />
+                <span className="text-white text-xs sm:text-sm ml-1">
+                  {movie.vote_average}
+                </span>
+              </div>
+              {movie.release_date && (
+                <span className="text-zinc-500 text-xs sm:text-sm">
+                  {format(new Date(movie.release_date), "y")}
+                </span>
+              )}
             </div>
-            <span className="text-zinc-500 text-sm">
-              {format(new Date(movie.release_date), "Y")}
-            </span>
           </div>
         </Link>
       </motion.div>
@@ -80,12 +80,26 @@ export default function MovieCard({
 
 export function MovieCardLoading() {
   return (
-    <div className={containerClass}>
-      <div className="aspect-w-2 aspect-h-3 h-64  bg-gray-700 animate-pulse"></div>
-      <div className="p-4">
-        <div className="h-6 bg-gray-700 rounded w-3/4 mb-2"></div>
-        <div className="h-4 bg-gray-700 rounded w-1/2"></div>
+    <motion.div
+      initial={{
+        opacity: 0,
+        scale: 0.8,
+      }}
+      whileInView={{
+        opacity: 1,
+        scale: 1,
+      }}
+      className={containerClass}
+    >
+      <div className="aspect-[2/3] bg-gray-700 animate-pulse relative">
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-zinc-900 to-transparent p-4">
+          <div className="h-4 sm:h-5 md:h-6 bg-gray-600 rounded w-3/4 mb-2"></div>
+          <div className="flex justify-between items-center">
+            <div className="h-3 sm:h-4 bg-gray-600 rounded w-12"></div>
+            <div className="h-3 sm:h-4 bg-gray-600 rounded w-8"></div>
+          </div>
+        </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
