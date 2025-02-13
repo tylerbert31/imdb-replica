@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import MovieCard, { MovieCardLoading } from "./components/Home/movie_card";
+import MovieCard, { MovieCardLoading } from "./_components/Home/movie_card";
 import { getTrending } from "../lib/client/server-actions";
 import { TrendingMovies } from "../lib/types/movie";
 import { motion } from "framer-motion";

@@ -4,7 +4,7 @@ import React, { useState, useEffect, useTransition, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { searchMovie } from "@/lib/client/server-actions";
 import { SearchedMovie } from "@/lib/types/movie";
-import MovieCard, { MovieCardLoading } from "../components/Home/movie_card";
+import MovieCard, { MovieCardLoading } from "../_components/Home/movie_card";
 import SearchForm from "@/components/SearchForm";
 import InfiniteScroll from "@/components/ui/InfiniteScroll";
 import { Loader2 } from "lucide-react";
