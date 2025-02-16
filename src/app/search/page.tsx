@@ -31,6 +31,7 @@ function SearchContent() {
       setResults(res.results);
       setTotalResults(res.total_results);
       setTotalPages(res.total_pages);
+      setPage(2);
     }
   };
 
