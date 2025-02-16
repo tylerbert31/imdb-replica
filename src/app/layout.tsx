@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "TmDB",
+  title: "TmDB - Tyler's Movie Database",
   description: "Tyler's Movie Database | IMDB Clone",
   openGraph: {
     images: [

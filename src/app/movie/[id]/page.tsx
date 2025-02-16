@@ -14,14 +14,11 @@ import {
   CastMember,
   CrewMember,
   MovieDetails as MovieDetailsType,
-  VideoResult,
 } from "@/lib/types/movie";
 import MyTools from "@/lib/client/mytools";
 import { bebasNeue, robotoCondensed } from "@/lib/fonts";
 import MiniTooltip from "@/components/mini_tooltip";
-import RelatedMovies from "@/app/_components/Home/Details/RelatedMovies";
-import { Separator } from "@/components/ui/separator";
-import { motion } from "framer-motion";
+import RelatedMovies from "@/app/_components/Details/RelatedMovies";
 
 export default function MovieDetails() {
   const { id } = useParams();
@@ -31,13 +28,14 @@ export default function MovieDetails() {
     null
   );
 
-  // ~ If Movie Details are not found, return MovieNotFound Component
-  if ((error && !isLoading && !movieDetails) || !id || typeof id !== "string") {
-    return <MovieNotFound />;
-  }
-
   // ~ Initial Fetch Movie Details from API
   const fetchMovieDetails = async () => {
+    if (!id || typeof id !== "string") {
+      setError(true);
+      setIsLoading(false);
+      return;
+    }
+
     const res = await useMovieDetails(id);
     if (res) {
       setMovieDetails(res);
@@ -50,6 +48,11 @@ export default function MovieDetails() {
   useEffect(() => {
     fetchMovieDetails();
   }, []);
+
+  // Move conditional returns after all hooks are declared
+  if (!id || typeof id !== "string" || (error && !isLoading && !movieDetails)) {
+    return <MovieNotFound />;
+  }
 
   if (isLoading) {
     return <MovieDetailsLoading />;
@@ -176,7 +179,33 @@ export default function MovieDetails() {
               </Card>
 
               {/* Trailer Section */}
-              {trailer && <Trailer trailer={trailer} />}
+              <div>
+                <h2
+                  className={`text-lg font-semibold text-zinc-50 mb-4 ${bebasNeue.className} tracking-wide`}
+                >
+                  Trailer
+                </h2>
+                {trailer ? (
+                  <Card className="border-zinc-800 bg-zinc-900/50 overflow-hidden">
+                    <div className="aspect-video">
+                      <iframe
+                        className="w-full h-full"
+                        src={`https://www.youtube.com/embed/${trailer.key}`}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    </div>
+                  </Card>
+                ) : (
+                  <Card className="border-zinc-800 bg-zinc-900/50">
+                    <CardContent className="p-6">
+                      <p className="text-zinc-400 text-center">
+                        No trailer available
+                      </p>
+                    </CardContent>
+                  </Card>
+                )}
+              </div>
 
               {/* Cast and Director Section */}
               <div className="block sm:hidden">
@@ -190,8 +219,6 @@ export default function MovieDetails() {
             </div>
           </div>
         </div>
-
-        <Separator className="my-10 opacity-5" />
 
         {/* Related Movies */}
         {movieDetails?.id && <RelatedMovies movieId={movieDetails.id} />}
@@ -417,32 +444,5 @@ function MovieNotFound() {
         </div>
       </div>
     </main>
-  );
-}
-
-/**
- * Trailer Component
- * @param trailer {VideoResult} - Trailer Object
- * @returns Trailer Component
- */
-function Trailer({ trailer }: { trailer: VideoResult }) {
-  return (
-    <div>
-      <h2
-        className={`text-lg font-semibold text-zinc-50 mb-4 ${bebasNeue.className} tracking-wide`}
-      >
-        Trailer
-      </h2>
-      <Card className="border-zinc-800 bg-zinc-900/50 overflow-hidden">
-        <div className="aspect-video">
-          <iframe
-            className="w-full h-full"
-            src={`https://www.youtube.com/embed/${trailer.key}`}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
-        </div>
-      </Card>
-    </div>
   );
 }

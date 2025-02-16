@@ -29,7 +29,7 @@ abstract class Controller {
    * ---
    * Upstash Redis
    */
-  protected readonly redis = redis;
+  protected readonly redis: typeof redis;
 
   protected readonly axios = axios;
 
@@ -45,12 +45,24 @@ abstract class Controller {
 
   constructor() {
     autoBind(this);
+
+    // ~ Require TMDB Credentials
     if (!process.env.TMDB_READ_KEY || !process.env.TMDB_API_KEY) {
       throw new Error("Missing TMDB credentials");
     }
 
     this.tmdbReadKey = process.env.TMDB_READ_KEY;
     this.tmdbAPIKey = process.env.TMDB_API_KEY;
+
+    // ~ Require Redis Credentials
+    if (
+      !process.env.UPSTASH_REDIS_REST_URL ||
+      !process.env.UPSTASH_REDIS_REST_TOKEN
+    ) {
+      throw new Error("Missing Redis credentials");
+    }
+
+    this.redis = redis;
   }
 
   /**

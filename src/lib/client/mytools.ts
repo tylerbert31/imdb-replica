@@ -1,5 +1,12 @@
 import autoBind from "../auto_bind";
 
+/**
+ * #### MyTools - Client-side utility class
+ * ---
+ * A utility class for common functions.
+ *
+ * Developer Github - [tylerbert31](https://github.com/tylerbert31)
+ */
 class myTools {
   constructor() {
     autoBind(this);
@@ -41,6 +48,9 @@ class myTools {
     return genreIds.map((id) => this.getGenreName(id));
   }
 
+  /**
+   * Get Genres Array
+   */
   private genres: {
     id: number;
     name: string;

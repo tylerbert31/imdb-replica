@@ -34,11 +34,16 @@ function SearchContent() {
     }
   };
 
+  /**
+   * #### Appends new results to the existing results when the user scrolls to the bottom of the page.
+   * ---
+   * Infinite Scroll
+   */
   const handleNextPage = () => {
     if (page < totalPages) {
       startFetchNewPage(async () => {
         console.log("Fetching new page", page);
-        setPage(page + 1);
+        setPage((prev) => prev + 1);
         const newRes = await searchMovie(movie, page);
         if (newRes && newRes.results.length) {
           setResults([...results!, ...newRes.results]);
@@ -97,10 +102,22 @@ function SearchContent() {
   );
 }
 
+/**
+ * #### No Results
+ * ---
+ * Displays a message when no results are found.
+ */
 function NoResults() {
   return <div className="text-white p-5">No results found</div>;
 }
 
+/**
+ * #### Search Page
+ * ---
+ * Displays the search page.
+ *
+ * `useParams()` requires a client component that's wrapped in a Suspense component.
+ */
 export default function Search() {
   return (
     <Suspense fallback={<div className="text-white p-5">Loading...</div>}>

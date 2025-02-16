@@ -8,6 +8,13 @@ import {
   TrendingMovies,
 } from "../lib/types/movie";
 
+/**
+ * #### Movie Controller
+ * ---
+ * An API / Server controller for the movie API.
+ *
+ * Developer Github - [tylerbert31](https://github.com/tylerbert31)
+ */
 class movieController extends Controller {
   constructor() {
     super();
@@ -54,7 +61,8 @@ class movieController extends Controller {
   /**
    * Search for a movie
    * ---
-   * @param query {string}
+   * @param query {string} - The query to search for.
+   * @param page {number} - Optional, defaults to 1
    * @returns {Promise<SearchResultsArr | null>}
    */
   public async searchMovie(
@@ -92,7 +100,8 @@ class movieController extends Controller {
 
   /**
    * Get Movie Details
-   * @param id {number}
+   * ---
+   * @param id {number} - The movie id to get the details for.
    * @returns {Promise<MovieDetails | null>}
    */
   public async getMovieDetails(id: number): Promise<MovieDetails | null> {

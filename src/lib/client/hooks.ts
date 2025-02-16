@@ -4,6 +4,9 @@ import { MovieDetails, SearchResultsArr } from "../types/movie";
 /**
  * # Movie Details
  * ---
+ * #### This is used to get the movie details for a given movie id.
+ * ---
+ * API - `POST /api/detail`
  * @param id {string | number} - Movie ID
  * @returns {Promise<MovieDetails | null>} - Movie Details
  */
@@ -25,6 +28,9 @@ export const useMovieDetails = async (
 /**
  * # Search Movie
  * ---
+ * #### This is used to search for a movie by name.
+ * ---
+ * API - `POST /api/search`
  * @param query {string} - Movie Name
  * @param page {number} - Page Number
  * @returns {Promise<SearchResultsArr | null>} - Search Results
