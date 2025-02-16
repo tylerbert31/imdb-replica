@@ -26,7 +26,8 @@ class movieController extends Controller {
    * **Request Body:**
    * ```
    * {
-   *  "query": "Avengers"
+   *  "query": "Avengers",
+   *  "page": 1
    * }
    * ```
    */
