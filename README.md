@@ -14,6 +14,19 @@ Visit the live application at [tmdb-ap1.tylerbert.cc](https://tmdb-ap1.tylerbert
 - TMDB API
 - AWS Amplify
 
+## ✨ Additional Features
+
+### 📱 User Experience
+
+- **Infinite Scroll**: Seamlessly load more movies as you scroll
+- **Mobile Responsive**: Fully responsive design that works on all devices
+- **Loading States + Animations**: Smooth loading transitions using Framer Motion animations
+
+### ⚡ Performance
+
+- **Redis Caching**: Server-side external caching for API responses
+- **Node-cache**: In-memory caching for faster repeated requests
+
 ## 🚀 Getting Started
 
 ### Prerequisites
