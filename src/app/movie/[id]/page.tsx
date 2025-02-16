@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Star, Clock, Calendar } from "lucide-react";
+import { Star, Clock, Calendar, Share2 } from "lucide-react";
 import { useParams } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
@@ -43,6 +43,25 @@ export default function MovieDetails() {
       setError(true);
     }
     setIsLoading(false);
+  };
+
+  /**
+   * Share the movie details
+   */
+  const handleShare = () => {
+    if (movieDetails?.title) {
+      navigator
+        .share({
+          title: movieDetails.title,
+          text:
+            movieDetails.tagline ||
+            `Check out ${movieDetails.title} on MovieDB`,
+          url: window.location.href,
+        })
+        .catch((err) => {
+          console.log("Error sharing:", err);
+        });
+    }
   };
 
   useEffect(() => {
@@ -122,6 +141,17 @@ export default function MovieDetails() {
                     </MiniTooltip>
                     <span className="text-zinc-100">
                       {movieDetails?.release_date}
+                    </span>
+                  </div>
+                  <div
+                    onClick={handleShare}
+                    className="flex items-center gap-2 cursor-pointer group"
+                  >
+                    <MiniTooltip text="Share">
+                      <Share2 className="text-blue-500 cursor-pointer group-hover:text-blue-400 transition-colors" />
+                    </MiniTooltip>
+                    <span className="text-zinc-200 group-hover:text-zinc-50 transition-colors">
+                      Share
                     </span>
                   </div>
                 </CardContent>
